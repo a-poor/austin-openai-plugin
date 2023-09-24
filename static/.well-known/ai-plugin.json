@@ -1,0 +1,17 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "About Austin",
+    "name_for_model": "aboutAustin",
+    "description_for_human": "A plugin that allows the user to get information about Austin Poor.",
+    "description_for_model": "A plugin that allows the user to get information about Austin Poor.",
+    "auth": {
+        "type": "none"
+    },
+    "api": {
+        "type": "openapi",
+        "url": "http://localhost:8000/openapi.yaml"
+    },
+    "logo_url": "http://localhost:8000/logo.png",
+    "contact_email": "support@example.com",
+    "legal_info_url": "http://www.example.com/legal"
+}

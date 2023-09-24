@@ -1,0 +1,302 @@
+openapi: 3.0.1
+info:
+  title: About Austin
+  description: A plugin that allows the user to get information about Austin Poor list using ChatGPT.
+  version: 'v1'
+servers:
+  - url: http://localhost:8000
+paths:
+  /about:
+    get:
+      operationId: getAbout
+      summary: Get some basic information about Austin.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAboutResponse'
+  /blog:
+    get:
+      operationId: getBlog
+      summary: Get a list of Austin's blog posts.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getBlogResponse'
+  /projects:
+    get:
+      operationId: getProjects
+      summary: Get a list of Austin's projects.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getProjectsResponse'
+  /resume:
+    get:
+      operationId: getResume
+      summary: Get information from Austin's resume.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getResumeResponse'
+  /contact:
+    get:
+      operationId: getContact
+      summary: Get a link to Austin's contact information.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getContactResponse'
+  /sayhi:
+    post:
+      operationId: sayHi
+      summary: Send a message to Austin.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sayHiRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sayHiResponse'
+  /skills:
+    get:
+      operationId: getSkills
+      summary: Get a list of Austin's skills.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getSkillsResponse'
+components:
+  schemas:
+    getAboutResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Austin's name.
+        title:
+          type: string
+          description: Austin's job title.
+        summary:
+          type: string
+          description: A short text summary of who Austin is.
+        location:
+          type: string
+          description: Where is Austin located (generally)?
+        dog:
+          type: string
+          description: The name of Austin's dog.
+    getBlogResponse:
+      type: object
+      properties:
+        posts:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                description: The title of the blog post.
+              description:
+                type: string
+                description: A short description of the blog post.
+              tags:
+                type: array
+                items:
+                  type: string
+                description: A list of tags for the blog post.
+              published:
+                type: string
+                description: The date the blog post was published.
+              url:
+                type: string
+                description: The URL of the blog post.
+          description: The list of blog posts.
+    getProjectsResponse:
+      type: object
+      properties:
+        projects:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the project.
+              description:
+                type: string
+                description: A short description of the project.
+              tags:
+                type: array
+                items:
+                  type: string
+                description: A list of tags for the project.
+              url:
+                type: string
+                description: The URL of the project.
+          description: The list of projects.
+    getResumeResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Austin's name.
+        title:
+          type: string
+          description: Austin's job title.
+        summary:
+          type: string
+          description: A short text summary of who Austin is.
+        experience:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                description: The title of the job.
+              company:
+                type: string
+                description: The name of the company.
+              start:
+                type: string
+                description: The date the job started.
+              end:
+                type: string
+                description: The date the job ended.
+              description:
+                type: string
+                description: A short description of the job.
+          description: A list of Austin's work experience.
+        education:
+          type: array
+          items:
+            type: object
+            properties:
+              school:
+                type: string
+                description: The name of the school.
+              degree:
+                type: string
+                description: The degree earned.
+              start:
+                type: string
+                description: The date the degree started.
+              end:
+                type: string
+                description: The date the degree ended.
+              description:
+                type: string
+                description: A short description of the degree.
+          description: A list of Austin's education.
+        skills:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the skill.
+              description:
+                type: string
+                description: A short description of the skill.
+              category:
+                type: array
+                items:
+                  type: string
+                description: A list of categories under which skill the skill falls.
+          description: A list of Austin's skills.
+        certifications:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the certification.
+              description:
+                type: string
+                description: A short description of the certification.
+              date:
+                type: string
+                description: The date the certification was earned.
+              url:
+                type: string
+                description: The URL of the certification.
+          description: A list of Austin's certifications.
+    getContactResponse:
+      type: object
+      properties:
+        contacts:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the contact.
+              url:
+                type: string
+                description: The URL of the contact.
+          description: The list of contacts.
+    sayHiRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the person sending the message.
+        message:
+          type: string
+          description: The message to send to Austin.
+    sayHiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether or not the message was sent successfully.
+        message:
+          type: string
+          description: A message describing the result of the request.
+    getSkillsResponse:
+      type: object
+      properties:
+        skills:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the skill.
+              description:
+                type: string
+                description: A short description of the skill.
+              category:
+                type: array
+                items:
+                  type: string
+                description: A list of categories under which skill the skill falls.
+          description: The list of skills.
+        
