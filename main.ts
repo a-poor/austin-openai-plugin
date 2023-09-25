@@ -3,6 +3,14 @@ import { logger } from 'https://deno.land/x/hono@v3.7.2/middleware.ts';
 import { cors } from 'https://deno.land/x/hono@v3.7.2/middleware.ts'
 import { serveStatic } from 'https://deno.land/x/hono@v3.7.2/middleware.ts';
 import { z } from 'https://deno.land/x/zod@v3.22.2/mod.ts';
+import { parse, stringify } from "https://deno.land/std@0.202.0/yaml/mod.ts";
+import * as path from "https://deno.land/std@0.202.0/path/mod.ts";
+
+
+
+const OPENAPI_PATH = "./openapi.yaml";
+const DEV_HOST = "http://localhost:8000";
+const PROD_HOST = "https://chatgpt-plugin.austinpoor.com";
 
 
 const aboutMe = {
@@ -246,12 +254,62 @@ const sayHiRequestSchema = z.object({
 });
 
 
-function createApp() {
+function getAIPluginFile(isProd: boolean) {
+  // Set the paths based on the environment...
+  const host = isProd ? PROD_HOST : DEV_HOST;
+
+  // Format and return the data...
+  return {
+    schema_version: "v1",
+    name_for_human: "About Austin",
+    name_for_model: "aboutAustin",
+    description_for_human: "A plugin that allows the user to get information about Austin Poor.",
+    description_for_model: "A plugin that allows the user to get information about Austin Poor.",
+    auth: {
+        type: "none"
+    },
+    api: {
+        type: "openapi",
+        url: path.join(host, "/openapi.json"),
+    },
+    logo_url: path.join(host, "/logo.png"),
+    contact_email: "hello@austinpoor.com",
+    legal_info_url: "https://github.com/a-poor/austin-openai-plugin"
+  };
+}
+
+async function getOpenAPIFile(isProd: boolean) {
+  // Set the paths based on the environment...
+  const host = isProd ? PROD_HOST : DEV_HOST;
+
+  // Load the file...
+  const raw = await Deno.readTextFile(OPENAPI_PATH);
+
+  // Parse the file...
+  const data = parse(raw) as { servers: { url: string }[] };
+
+  // Set the servers...
+  data.servers = [{ url: host }];
+
+  // Return the data...
+  return data;
+}
+
+async function createApp(isProd: boolean) {
+  // Get the host path...
+  const host = isProd ? PROD_HOST : DEV_HOST;
+
+  // Get the AI plugin file...
+  const aiPluginFile = getAIPluginFile(isProd);
+
+  // Get the OpenAPI file...
+  const openAPIFile = await getOpenAPIFile(isProd);
+
   // Create the app and setup middleware...
   const app = new Hono();
   app.use("*", logger());
   app.use("*", cors({
-    origin: ["http://localhost:8000", "https://chat.openai.com"],
+    origin: [host, "https://chat.openai.com"],
   }));
 
   // Add the endpoints...
@@ -298,7 +356,14 @@ function createApp() {
   });
 
   // Add static files...
-  app.use('/*', serveStatic({ root: './static' }))
+  app.get('/.well-known/ai-plugin.json', c => c.json(aiPluginFile));
+  app.get('/openapi.json', c => c.json(openAPIFile));
+  app.get('/openapi.yaml', () => new Response(
+    stringify(openAPIFile), {
+      status: 200,
+      headers: { 'Content-Type': 'text/yaml' },
+    }));
+  app.use('/*', serveStatic({ root: './static' }));
 
   // Return the app...
   return app;
@@ -307,6 +372,12 @@ function createApp() {
 
 // Learn more at https://deno.land/manual/examples/module_metadata#concepts
 if (import.meta.main) {
-  const app = createApp();
+  // Is prod?
+  const isProd = Deno.env.get("ENV") === "prod";
+
+  // Create the app...
+  const app = await createApp(isProd);
+
+  // Serve the app...
   Deno.serve(app.fetch);
 }
