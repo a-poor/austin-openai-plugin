@@ -6,7 +6,6 @@ import { cors } from 'https://deno.land/x/hono@v3.7.2/middleware.ts'
 import { serveStatic } from 'https://deno.land/x/hono@v3.7.2/middleware.ts';
 import { z } from 'https://deno.land/x/zod@v3.22.2/mod.ts';
 import { parse, stringify } from "https://deno.land/std@0.202.0/yaml/mod.ts";
-import * as path from "https://deno.land/std@0.202.0/path/mod.ts";
 
 
 
@@ -286,9 +285,9 @@ function getAIPluginFile(isProd: boolean) {
     },
     api: {
         type: "openapi",
-        url: path.join(host, "/openapi.json"),
+        url: host + "/openapi.json",
     },
-    logo_url: path.join(host, "/logo.png"),
+    logo_url: host + "/logo.png",
     contact_email: "hello@austinpoor.com",
     legal_info_url: "https://github.com/a-poor/austin-openai-plugin"
   };
