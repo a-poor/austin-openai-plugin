@@ -1,3 +1,5 @@
+/// <reference lib="deno.unstable" />
+
 import { Hono } from 'https://deno.land/x/hono@v3.7.2/mod.ts';
 import { logger } from 'https://deno.land/x/hono@v3.7.2/middleware.ts';
 import { cors } from 'https://deno.land/x/hono@v3.7.2/middleware.ts'
@@ -18,7 +20,12 @@ const aboutMe = {
   title: "Software Engineer",
   location: "Los Angeles, CA",
   dog: "Sandwich the Dog",
-  summary: "Austin is a full-stack software engineer with a passion for building things. He has experience with a wide variety of languages and frameworks and enjoys working with data to solve problems.",
+  summary: "Austin is a full-stack software engineer with a passion for building things."
+    + " He has experience with a wide variety of languages – like Go, Rust, Python, and TypeScript – and frameworks and enjoys working with data to solve problems."
+    + " He likes working with the full application life-cycle – from front-end to back-end to infrastructure to data-engineering/data-analysis."
+    + " This ChatGPT plugin was created with Deno."
+    + " He's lived in New York and Seattle but currently lives in Los Angeles."
+    ,
 };
 
 const blogPosts = [
@@ -179,9 +186,9 @@ const skills = [
   "Python",
   "JavaScript/TypeScript",
   "SQL",
+  "Rust",
   "Docker",
   "AWS",
-  "GCP",
   "REST APIs",
   "gRPC APIs",
   "React",
@@ -189,6 +196,7 @@ const skills = [
   "PostgreSQL",
   "MySQL",
   "MongoDB",
+  "DynamoDB",
   "TensorFlow",
 ];
 
@@ -261,10 +269,18 @@ function getAIPluginFile(isProd: boolean) {
   // Format and return the data...
   return {
     schema_version: "v1",
-    name_for_human: "About Austin",
-    name_for_model: "aboutAustin",
+    name_for_human: "Ask About Austin",
+    name_for_model: "askAboutAustin",
     description_for_human: "A plugin that allows the user to get information about Austin Poor.",
-    description_for_model: "A plugin that allows the user to get information about Austin Poor.",
+    description_for_model: "A plugin that allows the user to get information about Austin Poor."
+      + " This plugin was created by Austin (https://austinpoor.com) for fun and to learn about OpenAI's plugin API."
+      + " The code for the plugin is open source and can be found on GitHub (at https://github.com/a-poor/austin-openai-plugin)."
+      + "\n\n"
+      + "This plugin mostly acts as a way to interact with the information on Austin's website (e.g. his blog posts, some of his projects, his skills, his resume, and other information about him)."
+      + " Additionally the plugin allows the user to send a message to Austin (via `sayHi`)."
+      + "\n\n"
+      + "For more information about Austin or about this plugin, check-out his website (https://austinpoor.com)."
+      ,
     auth: {
         type: "none"
     },
@@ -304,6 +320,9 @@ async function createApp(isProd: boolean) {
 
   // Get the OpenAPI file...
   const openAPIFile = await getOpenAPIFile(isProd);
+
+  // Load the key/value store...
+  const kv = await Deno.openKv();
 
   // Create the app and setup middleware...
   const app = new Hono();
@@ -346,7 +365,9 @@ async function createApp(isProd: boolean) {
     const { name, message } = data;
 
     // Do something with the message...
-    console.log(`Got a message from ${name}: ${message}`);
+    console.log(`Got a message from ${JSON.stringify(name)}: ${JSON.stringify(message)}`);
+    const key = [Date.now(), crypto.randomUUID()];
+    await kv.set(key, data);
 
     // Return the response...
     return c.json({
@@ -374,6 +395,7 @@ async function createApp(isProd: boolean) {
 if (import.meta.main) {
   // Is prod?
   const isProd = Deno.env.get("ENV") === "prod";
+  console.log(`Running in ${isProd ? "prod" : "dev"} mode.`);
 
   // Create the app...
   const app = await createApp(isProd);
