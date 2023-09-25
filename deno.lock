@@ -1,5 +1,5 @@
 {
-  "version": "3",
+  "version": "2",
   "redirects": {
     "https://deno.land/std/path/mod.ts": "https://deno.land/std@0.202.0/path/mod.ts",
     "https://deno.land/std/yaml/mod.ts": "https://deno.land/std@0.202.0/yaml/mod.ts",
