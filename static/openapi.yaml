@@ -64,7 +64,7 @@ paths:
   /sayhi:
     post:
       operationId: sayHi
-      summary: Send a message to Austin.
+      summary: "Send a message to Austin. Make sure to ask the user their name for the message, otherwise, use 'Anonymous'."
       requestBody:
         content:
           application/json:
@@ -119,6 +119,9 @@ components:
               title:
                 type: string
                 description: The title of the blog post.
+              subtitle:
+                type: string
+                description: The subtitle of the blog post.
               description:
                 type: string
                 description: A short description of the blog post.
@@ -166,6 +169,8 @@ components:
         title:
           type: string
           description: Austin's job title.
+        location:
+          type: string
         summary:
           type: string
           description: A short text summary of who Austin is.
@@ -183,10 +188,12 @@ components:
               company:
                 type: string
                 description: The name of the company.
-              start:
+              location:
+                type: string
+              startDate:
                 type: string
                 description: The date the job started.
-              end:
+              endDate:
                 type: string
                 description: The date the job ended.
               description:
@@ -204,32 +211,23 @@ components:
               degree:
                 type: string
                 description: The degree earned.
-              start:
+              graduation:
                 type: string
-                description: The date the degree started.
-              end:
+                description: The graduation date.
+              location:
                 type: string
-                description: The date the degree ended.
-              description:
-                type: string
-                description: A short description of the degree.
+                description: The location of the school.
+              selectCourses:
+                type: array
+                items:
+                  type: string
+                description: A list of select courses taken.
           description: A list of Austin's education.
         skills:
           type: array
           items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: The name of the skill.
-              description:
-                type: string
-                description: A short description of the skill.
-              category:
-                type: array
-                items:
-                  type: string
-                description: A list of categories under which skill the skill falls.
+            type: string
+            description: The name of the skill.
           description: A list of Austin's skills.
         certifications:
           type: array
@@ -239,9 +237,6 @@ components:
               name:
                 type: string
                 description: The name of the certification.
-              description:
-                type: string
-                description: A short description of the certification.
               date:
                 type: string
                 description: The date the certification was earned.
