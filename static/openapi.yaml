@@ -111,7 +111,7 @@ components:
     getBlogResponse:
       type: object
       properties:
-        posts:
+        blogPosts:
           type: array
           items:
             type: object
@@ -169,6 +169,9 @@ components:
         summary:
           type: string
           description: A short text summary of who Austin is.
+        learnMore:
+          type: string
+          description: A link to learn more about Austin.
         experience:
           type: array
           items:
@@ -270,6 +273,9 @@ components:
         message:
           type: string
           description: The message to send to Austin.
+      required:
+        - name
+        - message
     sayHiResponse:
       type: object
       properties:
@@ -285,18 +291,7 @@ components:
         skills:
           type: array
           items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: The name of the skill.
-              description:
-                type: string
-                description: A short description of the skill.
-              category:
-                type: array
-                items:
-                  type: string
-                description: A list of categories under which skill the skill falls.
+            type: string
+            description: The name of the skill.
           description: The list of skills.
         
