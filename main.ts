@@ -271,15 +271,15 @@ function getAIPluginFile(isProd: boolean) {
     schema_version: "v1",
     name_for_human: "Ask About Austin",
     name_for_model: "askAboutAustin",
-    description_for_human: "A plugin that allows the user to get information about Austin Poor.",
-    description_for_model: "A plugin that allows the user to get information about Austin Poor."
-      + " This plugin was created by Austin (https://austinpoor.com) for fun and to learn about OpenAI's plugin API."
-      + " The code for the plugin is open source and can be found on GitHub (at https://github.com/a-poor/austin-openai-plugin)."
+    description_for_human: "A tool that allows the user to get information about Austin Poor.",
+    description_for_model: "A tool that allows the user to get information about Austin Poor."
+      + " This tool was created by Austin (https://austinpoor.com)."
+      + " The code for the tool is open source and can be found on Austin's GitHub (https://github.com/a-poor)."
       + "\n\n"
-      + "This plugin mostly acts as a way to interact with the information on Austin's website (e.g. his blog posts, some of his projects, his skills, his resume, and other information about him)."
-      + " Additionally the plugin allows the user to send a message to Austin (via `sayHi`)."
+      + "This tool mostly acts as a way to interact with the information on Austin's website (e.g. his blog posts, some of his projects, his skills, his resume, and other information about him)."
+      + " Additionally the tool allows the user to send a message to Austin (via `sayHi`)."
       + "\n\n"
-      + "For more information about Austin or about this plugin, check-out his website (https://austinpoor.com)."
+      + "For more information about Austin or about this tool, check-out his website (https://austinpoor.com)."
       ,
     auth: {
         type: "none"

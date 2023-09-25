@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Ask About Austin
-  description: A plugin that allows the user to get information about Austin Poor list using ChatGPT.
+  description: A tool that allows the user to get information about Austin Poor.
   version: 'v1'
 servers:
   - url: http://localhost:8000
