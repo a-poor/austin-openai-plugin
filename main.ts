@@ -22,7 +22,7 @@ const aboutMe = {
   summary: "Austin is a full-stack software engineer with a passion for building things."
     + " He has experience with a wide variety of languages – like Go, Rust, Python, and TypeScript – and frameworks and enjoys working with data to solve problems."
     + " He likes working with the full application life-cycle – from front-end to back-end to infrastructure to data-engineering/data-analysis."
-    + " This ChatGPT plugin was created with Deno."
+    + " This tool was created with Deno."
     + " He's lived in New York and Seattle but currently lives in Los Angeles."
     ,
 };
