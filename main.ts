@@ -12,6 +12,7 @@ import { parse, stringify } from "https://deno.land/std@0.202.0/yaml/mod.ts";
 const OPENAPI_PATH = "./openapi.yaml";
 const DEV_HOST = "http://localhost:8000";
 const PROD_HOST = "https://chatgpt-plugin.austinpoor.com";
+const PUB_ADDR = Deno.env.get("PUB_ADDR");
 
 
 const aboutMe = {
@@ -367,6 +368,20 @@ async function createApp(isProd: boolean) {
     console.log(`Got a message from ${JSON.stringify(name)}: ${JSON.stringify(message)}`);
     const key = [Date.now(), crypto.randomUUID()];
     await kv.set(key, data);
+
+    // Publish the message...
+    if (PUB_ADDR) {
+      await fetch(PUB_ADDR, {
+        method: "POST",
+        headers: {
+          Title: "ChatGPT Plugin Message",
+          Tags: "wave,robot,envelope",
+        },
+        body: `${JSON.stringify(name)} says ${JSON.stringify(message)}`,
+      })
+        .then(() => console.log("Successfully published message"))
+        .catch(err => console.error(`Error publishing message: ${err}`));
+    }
 
     // Return the response...
     return c.json({
